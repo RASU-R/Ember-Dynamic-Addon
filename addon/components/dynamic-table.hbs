@@ -1,0 +1,48 @@
+<h2>Table</h2>
+{{#if @datas}}
+{{#if @remove}}
+    <button type="button" {{on 'click' (fn @remove this.selectedId)}} {{on 'click' this.clrId}}>Delete Choosen Item</button>
+{{/if}}
+<div class={{if @className @className 'table'}} >
+<table >
+  <thead>
+    <tr>
+      {{#each this.getHead as |h|}}
+        <th>{{h}}</th>
+      {{/each}}
+
+      {{#if (or @delete @update) }}
+        <th>Actions</th>
+      {{/if}} 
+
+    {{#if @remove}} <th>Select</th> {{/if}}
+
+    </tr>
+  </thead>
+  <tbody >
+        {{#each @datas as |data|}}
+            <tr>
+                {{#each-in data as |k v| }}
+                  <td>{{v}}</td>
+                {{/each-in}}
+
+                {{#if (or @delete @update) }}
+                    <td>   
+                    <button type="button" {{on "click" (fn @delete data.id)}}>Delete</button>
+                    <button type="button"><LinkTo @route={{this.args.EditRouteName}} @model={{data.id}} {{on 'click' (fn @update data)}}>Edit Row</LinkTo></button>
+                    </td>
+                {{/if}} 
+
+                {{#if @remove}}    
+                    <td> 
+                    <Input @type="checkbox" {{on 'click' (fn this.check data.id) }} /> 
+                    </td>
+                {{/if}}
+            </tr>
+        {{/each}}
+ </tbody>
+</table>
+</div>
+{{else}}
+<h5>Table is Empty</h5>
+{{/if}}
